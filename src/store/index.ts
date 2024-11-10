@@ -1,9 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import themeReducer from "./themeSlice";
+import menuReducer from "./menuSlice";
+import cartReducer from "./cartSlice";
 
 const store = configureStore({
   reducer: {
     theme: themeReducer,
+    menu: menuReducer,
+    cart: cartReducer,
   },
 });
 

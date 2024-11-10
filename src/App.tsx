@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { ThemeProvider } from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { setTheme, setLoading } from "./store/themeSlice";
-import { RootState } from "./store";
-import GlobalStyle from "./styles/GlobalStyle";
+import { ThemeProvider } from "styled-components";
+
 import Header from "./components/Header/Header";
 import { fetchRestaurantData } from "./services/api";
+import { RootState } from "./store";
+import { setLoading, setTheme } from "./store/themeSlice";
+import GlobalStyle from "./styles/GlobalStyle";
+import ListMenu from "./components/Menu/ListMenu/ListMenu";
+import Home from "./pages/Home/Home";
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
@@ -51,7 +54,8 @@ const App: React.FC = () => {
   return (
     <ThemeProvider theme={dynamicTheme}>
       <GlobalStyle />
-      <Header />
+
+      <Home />
     </ThemeProvider>
   );
 };
