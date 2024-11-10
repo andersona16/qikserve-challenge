@@ -1,17 +1,15 @@
-import { useState } from 'react';
-
-import { useAppContext } from '../../contexts/AppContext';
-import { Banner, HeaderContainer, Navbar, NavItem } from './styles';
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
+import { Banner, HeaderContainer, Navbar, NavItem } from "./styles";
 
 const Header = () => {
-  const { restaurantData } = useAppContext();
+  const { theme } = useSelector((state: RootState) => state.theme);
   const [activeItem, setActiveItem] = useState<string>("");
 
-  if (!restaurantData) {
+  if (!theme) {
     return <div>Carregando...</div>;
   }
-
-  const { webSettings } = restaurantData;
 
   const handleMenuClick = (item: string) => {
     setActiveItem(item);
@@ -40,7 +38,7 @@ const Header = () => {
         </NavItem>
       </Navbar>
 
-      <Banner src={webSettings.bannerImage} alt="Restaurant Banner" />
+      <Banner src={theme.bannerImage} alt="Restaurant Banner" />
     </HeaderContainer>
   );
 };
