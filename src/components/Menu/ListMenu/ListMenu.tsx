@@ -111,7 +111,7 @@ const ListMenu: React.FC<ListMenuProps> = ({ searchQuery }) => {
     }));
   };
 
-  const renderSectionItems = (sectionName: string, items: MenuItem[]) => {
+  const renderSectionItems = (items: MenuItem[]) => {
     return filterItems(items).map((item) => {
       const cartItem = cartItems.find(
         (cartItem) => cartItem.id === `${item.id}-default`
@@ -185,7 +185,7 @@ const ListMenu: React.FC<ListMenuProps> = ({ searchQuery }) => {
                   )}
                 </TitleContainer>
                 {expandedSections[sectionName] &&
-                  renderSectionItems(sectionName, section.items)}
+                  renderSectionItems(section.items)}
               </div>
             );
           })}

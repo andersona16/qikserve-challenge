@@ -51,11 +51,12 @@ const Modal: React.FC<ModalProps> = ({ item, onClose }) => {
 
   const hasModifiers = item.modifiers && item.modifiers.length > 0;
   const [selectedSize, setSelectedSize] = useState<ModifierOption | null>(
-    hasModifiers ? item.modifiers[0].items[0] : null
+    hasModifiers ? item.modifiers![0].items[0] : null
   );
+
   const [quantity, setQuantity] = useState(1);
   const [selectedMeats, setSelectedMeats] = useState<number | null>(
-    hasModifiers ? item.modifiers[0].items[0].id : null
+    hasModifiers ? item.modifiers![0].items[0].id : null
   );
 
   const [isMobile, setIsMobile] = useState<boolean>(false);
@@ -89,7 +90,7 @@ const Modal: React.FC<ModalProps> = ({ item, onClose }) => {
       name: item.name,
       price: basePrice,
       quantity: quantity,
-      modifier: selectedSize ? `${selectedSize.name}` : undefined,
+      modifier: selectedSize ? `${selectedSize.name}` : "",
     };
 
     dispatch(addItemToCart(selectedItem));
@@ -126,7 +127,7 @@ const Modal: React.FC<ModalProps> = ({ item, onClose }) => {
                 </ContainerSize>
 
                 <ContainerOptions>
-                  {item.modifiers[0].items.map((option) => (
+                  {item.modifiers![0].items.map((option) => (
                     <SizeOption
                       key={option.id}
                       onClick={() => {
@@ -177,7 +178,6 @@ const Modal: React.FC<ModalProps> = ({ item, onClose }) => {
         </ModalContent>
       </ModalOverlay>
 
-      {/* Modal do carrinho (aparece quando for mobile e o item for adicionado ao carrinho) */}
       {isCartModalOpen && (
         <MobileCartModal
           cartItems={[

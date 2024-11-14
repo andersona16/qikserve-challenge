@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { ThemeProvider } from "styled-components";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { ThemeProvider } from 'styled-components';
 
-import Header from "./components/Header/Header";
-import { fetchRestaurantData } from "./services/api";
-import { RootState } from "./store";
-import { setLoading, setTheme } from "./store/themeSlice";
-import GlobalStyle from "./styles/GlobalStyle";
-import ListMenu from "./components/Menu/ListMenu/ListMenu";
-import Home from "./pages/Home/Home";
+import Home from './pages/Home/Home';
+import { fetchRestaurantData } from './services/api';
+import { RootState } from './store';
+import { setLoading, setTheme } from './store/themeSlice';
+import GlobalStyle from './styles/GlobalStyle';
 
 const App: React.FC = () => {
   const dispatch = useDispatch();

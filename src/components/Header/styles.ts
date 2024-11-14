@@ -18,7 +18,7 @@ export const Banner = styled.img`
 
 export const Navbar = styled.nav`
   display: flex;
-  justify-content: space-between; /* Espaça os itens de forma igual entre a esquerda e a direita */
+  justify-content: space-between;
   align-items: center;
   background-color: ${({ theme }) => theme.navBackgroundColor};
   padding: 10px 20px;
@@ -26,7 +26,7 @@ export const Navbar = styled.nav`
   @media screen and (max-width: 425px) {
     padding: 18px;
     display: flex;
-    justify-content: center; /* Centraliza os itens no Navbar */
+    justify-content: center;
     position: relative;
   }
 `;
@@ -38,12 +38,10 @@ export const HamburgerIcon = styled.div`
   position: absolute;
   right: 20px;
   top: 50%;
-  transform: translateY(
-    -50%
-  ); /* Ajusta para centralizar o ícone verticalmente */
+  transform: translateY(-50%);
 
   @media screen and (max-width: 425px) {
-    display: block; /* Exibe o ícone de hamburger em telas pequenas */
+    display: block;
   }
 `;
 
@@ -54,7 +52,7 @@ export const MenuLabel = styled.div`
   cursor: pointer;
 
   @media screen and (max-width: 425px) {
-    display: inline-block; /* Exibe o nome "Menu" em telas pequenas */
+    display: inline-block;
 
     font-size: 18px;
   }
@@ -71,12 +69,11 @@ export const NavItemsWrapper = styled.div<{ isOpen: boolean }>`
   @media screen and (max-width: 425px) {
     flex-direction: column;
     position: absolute;
-    top: 60px; /* Distância do topo quando o menu estiver aberto */
+    top: 60px;
     left: 0;
     right: 0;
     background-color: ${({ theme }) => theme.navBackgroundColor};
-    display: ${({ isOpen }) =>
-      isOpen ? "flex" : "none"}; /* Mostra ou esconde o menu */
+    display: ${({ isOpen }) => (isOpen ? "flex" : "none")};
     padding: 20px;
     text-align: center;
   }
@@ -96,7 +93,7 @@ export const NavItem = styled.a<{ isActive: boolean }>`
     isActive && `border-bottom: 5px solid ${theme.backgroundColour};`}
 
   @media screen and (max-width: 425px) {
-    font-size: 14px; /* Reduz o tamanho da fonte em telas pequenas */
-    padding: 10px 0; /* Ajusta o padding para otimizar o espaço */
+    font-size: 14px;
+    padding: 10px 0;
   }
 `;

@@ -1,8 +1,11 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { RootState } from '..../store';
-import { decrementItemQuantity, incrementItemQuantity } from '../../store/cartSlice';
+import { RootState } from "../../store";
+import {
+  decrementItemQuantity,
+  incrementItemQuantity,
+} from "../../store/cartSlice";
 import {
   Button,
   CartItem,
@@ -13,9 +16,18 @@ import {
   ModalOverlay,
   QuantityControls,
   TotalPrice,
-} from './styles';
+} from "./styles";
 
 interface MobileCartModalProps {
+  cartItems: {
+    id: string;
+    name: string;
+    price: number;
+    quantity: number;
+  }[];
+  totalPrice: number;
+  handleIncrement: () => void;
+  handleDecrement: () => void;
   handleClose: () => void;
 }
 
