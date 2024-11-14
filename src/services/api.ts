@@ -1,3 +1,4 @@
+// api.ts
 import axios from "axios";
 
 const baseURL = "/api";
@@ -7,11 +8,11 @@ export const api = axios.create({
 });
 
 export const fetchRestaurantData = async () => {
-  const response = await api.get("venue/9");
+  const response = await api.get("/venue/9");
   return response.data;
 };
 
 export const fetchRestaurantMenu = async () => {
-  const response = await api.get("menu");
+  const response = await api.get("/menu");
   return response.data;
 };
