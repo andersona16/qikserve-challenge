@@ -1,13 +1,12 @@
 {
-    "version": 2,
     "rewrites": [
         {
-            "source": "/menu",
-            "destination": "https://cdn-dev.preoday.com/challenge/menu"
+            "source": "/venue/9",
+            "destination": "/api/venue/9"
         },
         {
-            "source": "/venue/9",
-            "destination": "https://cdn-dev.preoday.com/challenge/venue/9"
+            "source": "/menu",
+            "destination": "/api/menu"
         }
     ]
 }

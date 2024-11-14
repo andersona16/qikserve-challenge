@@ -10,10 +10,7 @@ export default async function handler(req, res) {
         const response = await axios({
             method: req.method,
             url: apiUrl,
-            headers: {
-                ...req.headers,
-                host: 'cdn-dev.preoday.com',
-            },
+            headers: req.headers,
             data: req.body,
         });
 
