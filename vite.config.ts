@@ -5,10 +5,10 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      "/challenge": {
-        target: "https://cdn-dev.preoday.com",
+      "/api": {
+        target: "https://cdn-dev.preoday.com/challenge",
         changeOrigin: true,
-        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, ""),
       },
     },
   },

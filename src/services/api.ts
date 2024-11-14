@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = "https://cdn-dev.preoday.com/challenge";
+const baseURL = import.meta.env.MODE === "development" ? "/api" : "/api/proxy";
 
 export const api = axios.create({
   baseURL: baseURL,
