@@ -1,7 +1,6 @@
-// api/proxy.js
 import axios from 'axios';
 
-const API_BASE_URL = process.env.VITE_API_BASE_URL;
+const API_BASE_URL = 'https://cdn-dev.preoday.com/challenge/api';
 
 export default async function handler(req, res) {
     try {
@@ -16,7 +15,7 @@ export default async function handler(req, res) {
 
         res.status(response.status).json(response.data);
     } catch (error) {
-        console.error(error);
+        console.error('Erro no proxy:', error);
         res.status(error.response ? error.response.status : 500).json({ message: error.message });
     }
 }
