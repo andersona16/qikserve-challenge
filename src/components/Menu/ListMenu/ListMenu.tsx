@@ -1,105 +1,68 @@
 import React, { useEffect, useState } from "react";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
+
+import { api } from "../../../services/api";
 import { RootState } from "../../../store";
 import { setOptionsProducts } from "../../../store/menuSlice";
-import { api } from "../../../services/api";
-import styled from "styled-components";
+import Modal from "../../Modal/Modal";
+import {
+  ContainerList,
+  ContainerSections,
+  ItemContainer,
+  ItemDetails,
+  ItemImage,
+  SectionCard,
+  SectionImage,
+  SectionTitle,
+  TitleContainer,
+} from "./styles";
 
-const SectionTitle = styled.h1`
-  font-size: 16px;
-  color: #121212;
-  line-height: 18.75px;
-  letter-spacing: 0.5px;
-  font-weight: 600;
-  height: 38px;
-`;
+interface ModifierOption {
+  id: number;
+  name: string;
+  price: number;
+}
 
-const ContainerSections = styled.div`
-  display: flex;
-  gap: 20px;
-`;
+type MenuItem = {
+  id: number;
+  name: string;
+  description?: string;
+  price: number;
+  images?: { id: number; image: string }[];
+  modifiers?: { items: ModifierOption[] }[];
+};
 
-const SectionCard = styled.div<{ isSelected: boolean }>`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  gap: 16px;
-  border-bottom: ${(props) =>
-    props.isSelected ? "2px solid #4f372f" : "6px solid transparent"};
-`;
+type Section = {
+  id: number;
+  name: string;
+  items: MenuItem[];
+  images: { image: string }[];
+};
 
-const SectionImage = styled.img<{ isSelected: boolean }>`
-  width: 82px;
-  height: 82px;
-  border-radius: 50%;
-  padding: 4px;
-  object-fit: cover;
-  transition: box-shadow 0.3s ease, border 0.3s ease;
-  border: ${(props) =>
-    props.isSelected ? "2px solid #4f372f" : "6px solid transparent"};
-`;
+interface ListMenuProps {
+  searchQuery: string;
+}
 
-const ItemContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const ItemImage = styled.img`
-  height: 85px;
-  width: 128px;
-  border-radius: 4px;
-`;
-
-const ItemDetails = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-
-  > h1 {
-    font-size: 16px;
-
-    color: #121212;
-    line-height: 18.75px;
-    font-weight: 600;
-  }
-
-  > p {
-    font-size: 16px;
-    color: #464646;
-    line-height: 18.75px;
-    font-weight: 300;
-
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 434px;
-  }
-
-  > b {
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 18.75px;
-    letter-spacing: 0.5px;
-  }
-`;
-
-const ContainerList = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  box-shadow: 0px 2px 14px 0px #00000024;
-
-  background-color: #ffff;
-`;
-
-const ListMenu: React.FC = () => {
+const ListMenu: React.FC<ListMenuProps> = ({ searchQuery }) => {
   const dispatch = useDispatch();
-  const sections = useSelector((state: RootState) => state.menu.sections);
+  const sections = useSelector(
+    (state: RootState) => state.menu.sections
+  ) as Section[];
   const [selectedSectionId, setSelectedSectionId] = useState<number | null>(
     null
   );
+
+  const cartItems = useSelector((state: RootState) => state.cart.items);
+  const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
+
+  const [expandedSections, setExpandedSections] = useState<{
+    [key: string]: boolean;
+  }>({
+    Burgers: true,
+    Drinks: true,
+    Desserts: true,
+  });
 
   useEffect(() => {
     const fetchMenuItems = async () => {
@@ -121,6 +84,63 @@ const ListMenu: React.FC = () => {
 
   const handleSelectSection = (id: number) => {
     setSelectedSectionId(id);
+  };
+
+  const handleOpenModal = (item: MenuItem): void => {
+    setSelectedItem(item);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedItem(null);
+  };
+
+  const filterItems = (items: MenuItem[]) => {
+    if (!searchQuery) return items;
+    return items.filter(
+      (item) =>
+        item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (item.description &&
+          item.description.toLowerCase().includes(searchQuery.toLowerCase()))
+    );
+  };
+
+  const toggleSectionExpansion = (sectionName: string) => {
+    setExpandedSections((prev) => ({
+      ...prev,
+      [sectionName]: !prev[sectionName],
+    }));
+  };
+
+  const renderSectionItems = (sectionName: string, items: MenuItem[]) => {
+    return filterItems(items).map((item) => {
+      const cartItem = cartItems.find(
+        (cartItem) => cartItem.id === `${item.id}-default`
+      );
+      const quantity = cartItem ? cartItem.quantity : 0;
+      const modifier = cartItem?.modifier;
+
+      return (
+        <ItemContainer key={item.id} onClick={() => handleOpenModal(item)}>
+          <ItemDetails>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              {quantity > 0 && (
+                <>
+                  <span>{quantity}</span>
+                  {modifier && <span> - {modifier}</span>}
+                </>
+              )}
+              <h1>{item.name}</h1>
+            </div>
+            {item.description && <p>{item.description}</p>}
+            <b>R$ {item.price.toFixed(2)}</b>
+          </ItemDetails>
+
+          {item.images && item.images.length > 0 && (
+            <ItemImage src={item.images[0].image} alt={item.name} />
+          )}
+        </ItemContainer>
+      );
+    });
   };
 
   const selectedSection = sections.find(
@@ -148,21 +168,31 @@ const ListMenu: React.FC = () => {
 
       {selectedSection && (
         <div style={{ display: "flex", flexDirection: "column", gap: "37px" }}>
-          {selectedSection.items.map((item) => (
-            <ItemContainer key={item.id}>
-              <ItemDetails>
-                <h1>{item.name}</h1>
-                {item.description && <p>{item.description}</p>}
-                <b>R$ {item.price.toFixed(2)}</b>
-              </ItemDetails>
+          {["Burgers", "Drinks", "Desserts"].map((sectionName) => {
+            const section = sections.find((s) => s.name === sectionName);
+            if (!section) return null;
 
-              {item.images && item.images.length > 0 && (
-                <ItemImage src={item.images[0].image} alt={item.name} />
-              )}
-            </ItemContainer>
-          ))}
+            return (
+              <div key={sectionName}>
+                <TitleContainer
+                  onClick={() => toggleSectionExpansion(sectionName)}
+                >
+                  <h1>{sectionName}</h1>
+                  {expandedSections[sectionName] ? (
+                    <IoIosArrowUp size={24} color="#4F372F" />
+                  ) : (
+                    <IoIosArrowDown size={24} color="#4F372F" />
+                  )}
+                </TitleContainer>
+                {expandedSections[sectionName] &&
+                  renderSectionItems(sectionName, section.items)}
+              </div>
+            );
+          })}
         </div>
       )}
+
+      {selectedItem && <Modal item={selectedItem} onClose={handleCloseModal} />}
     </ContainerList>
   );
 };

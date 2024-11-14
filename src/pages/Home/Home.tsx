@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import Header from "../../components/Header/Header";
 import Cart from "../../components/Menu/Cart/Cart";
 import InputList from "../../components/Menu/InputList/InputList";
@@ -11,19 +12,21 @@ import {
 } from "./styles";
 
 const Home = () => {
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
   return (
     <>
       <HeaderWrapper>
         <Header />
       </HeaderWrapper>
 
-      <GridContainer>
-        <SearchWrapper>
-          <InputList />
-        </SearchWrapper>
+      <SearchWrapper>
+        <InputList onSearch={setSearchQuery} />
+      </SearchWrapper>
 
+      <GridContainer>
         <MenuWrapper>
-          <ListMenu />
+          <ListMenu searchQuery={searchQuery} />
         </MenuWrapper>
 
         <CartWrapper>

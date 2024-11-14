@@ -24,6 +24,10 @@ const GlobalStyle = createGlobalStyle`
   body {
     background-color: #EEEEEE;
     color: ${({ theme }) => theme.textColor || "#333"};
+
+    @media screen and (max-width: 425px) {
+      background-color: #fff;
+    }
   }
 
   h1, h2, h3, h4, h5, h6 {
