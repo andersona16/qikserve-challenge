@@ -18,7 +18,7 @@ export const Banner = styled.img`
 
 export const Navbar = styled.nav`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   background-color: ${({ theme }) => theme.navBackgroundColor};
   padding: 10px 20px;
@@ -63,7 +63,7 @@ export const NavItemsWrapper = styled.div<{ isOpen: boolean }>`
   justify-content: center;
   align-items: center;
   flex-direction: row;
-  width: 100%;
+  width: 50%;
   position: relative;
 
   @media screen and (max-width: 425px) {
